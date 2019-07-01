@@ -308,7 +308,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Barnes, R. and K. Bhargavan" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-irtf-cfrg-hpke-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-06-18" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-07-01" />
   <meta name="dct.abstract" content="This document describes a scheme for hybrid public-key encryption (HPKE).  This scheme provides authenticated public key encryption of arbitrary-sized plaintexts for a recipient public key. HPKE works for any combination of an asymmetric key encapsulation mechanism (KEM), key derivation function (KDF), and authenticated encryption with additional data (AEAD) encryption function. We provide instantiations of the scheme using widely-used and efficient primitives." />
   <meta name="description" content="This document describes a scheme for hybrid public-key encryption (HPKE).  This scheme provides authenticated public key encryption of arbitrary-sized plaintexts for a recipient public key. HPKE works for any combination of an asymmetric key encapsulation mechanism (KEM), key derivation function (KDF), and authenticated encryption with additional data (AEAD) encryption function. We provide instantiations of the scheme using widely-used and efficient primitives." />
 
@@ -332,12 +332,12 @@ ul.toc li {
 <td class="right">K. Bhargavan</td>
 </tr>
 <tr>
-<td class="left">Expires: December 20, 2019</td>
+<td class="left">Expires: January 2, 2020</td>
 <td class="right">Inria</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 18, 2019</td>
+<td class="right">July 01, 2019</td>
 </tr>
 
     	
@@ -353,7 +353,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 20, 2019.</p>
+<p>This Internet-Draft will expire on January 2, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -451,14 +451,13 @@ ul.toc li {
 <li>
 <samp>encode_big_endian(x, n)</samp>: An octet string encoding the integer value <samp>x</samp> as an n-byte big-endian value</li>
 <li>
-<samp>+</samp>: Concatenation of octet strings; <samp>0x01 + 0x02 = 0x0102</samp>
+<samp>concat(x0, ..., xN)</samp>: Concatenation of octet strings.  An empty value is treated as equivalent to an empty octet string.  <samp>concat(0x01, None, 0x0203) = 0x010203</samp>
 </li>
 <li>
-<samp>*</samp>: Repetition of an octet string; <samp>0x01 * 4 = 0x01010101</samp>
+<samp>zero(n)</samp>: An all-zero octet string of length <samp>n</samp>; <samp>zero(4) = 0x00000000</samp>
 </li>
 <li>
-<samp>^</samp>: XOR of octet strings; <samp>0xF0F0 ^ 0x1234 = 0xE2C4</samp>
-</li>
+<samp>xor(a,b)</samp>: XOR of octet strings; <samp>xor(0xF0F0, 0x1234) = 0xE2C4</samp>.  It is an error to call this function with two arguments of unequal length.</li>
 </ul>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#cryptographic-dependencies" id="cryptographic-dependencies">Cryptographic Dependencies</a>
@@ -526,13 +525,13 @@ def Decap(enc, skR):
 
 def AuthEncap(pkR, skI):
   skE, pkE = GenerateKeyPair()
-  zz = DH(skE, pkR) + DH(skI, pkR)
+  zz = concat(DH(skE, pkR), DH(skI, pkR))
   enc = Marshal(pkE)
   return zz, enc
 
 def AuthDecap(enc, skR, pkI):
   pkE = Unmarshal(enc)
-  return DH(skR, pkE) + DH(skR, pkI)
+  return concat(DH(skR, pkE), DH(skR, pkI))
 </pre>
 <p id="rfc.section.5.1.p.4">The GenerateKeyPair, Marshal, and Unmarshal functions are the same as for the underlying DH group.  The Marshal functions for the curves used in the ciphersuites in {#ciphersuites} are as follows:</p>
 <p></p>
@@ -582,30 +581,11 @@ def AuthDecap(enc, skR, pkI):
 </h1>
 <p id="rfc.section.6.1.p.1">The most basic function of an HPKE scheme is to enable encryption for the holder of a given KEM private key.  The <samp>SetupBaseI()</samp> and <samp>SetupBaseR()</samp> procedures establish contexts that can be used to encrypt and decrypt, respectively, for a given private key.</p>
 <p id="rfc.section.6.1.p.2">The the shared secret produced by the KEM is combined via the KDF with information describing the key exchange, as well as the explicit <samp>info</samp> parameter provided by the caller.</p>
-<p id="rfc.section.6.1.p.3">Note that the <samp>SetupCore()</samp> method is also used by the other HPKE variants describe below.  The value <samp>0*Nh</samp> in the <samp>SetupBase()</samp> procedure represents an all-zero octet string of length <samp>Nh</samp>.</p>
-<pre>
-def SetupCore(mode, secret, kemContext, info):
-  context = ciphersuite + mode +
-            len(kemContext) + kemContext +
-            len(info) + info
-  key = Expand(secret, "hpke key" + context, Nk)
-  nonce = Expand(secret, "hpke nonce" + context, Nn)
-  return Context(key, nonce)
-
-def SetupBase(pkR, zz, enc, info):
-  kemContext = enc + pkR
-  secret = Extract(0*Nh, zz)
-  return SetupCore(mode_base, secret, kemContext, info)
-
-def SetupBaseI(pkR, info):
-  zz, enc = Encap(pkR)
-  return enc, SetupBase(pkR, zz, enc, info)
-
-def SetupBaseR(enc, skR, info):
-  zz = Decap(enc, skR)
-  return SetupBase(pk(skR), zz, enc, info)
-</pre>
-<p id="rfc.section.6.1.p.4">Note that the context construction in the SetupCore procedure is equivalent to serializing a structure of the following form in the TLS presentation syntax:</p>
+<p id="rfc.section.6.1.p.3">Note that the <samp>SetupCore()</samp> method is also used by the other HPKE variants describe below.  ~~~~~ def SetupCore(mode, secret, kemContext, info): context = Concat(ciphersuite, mode, len(kemContext), kemContext, len(info), info) key = Expand(secret, concat(&#8220;hpke key&#8221;, context), Nk) nonce = Expand(secret, concat(&#8220;hpke nonce&#8221;, context), Nn) return Context(key, nonce)</p>
+<p id="rfc.section.6.1.p.4">def SetupBase(pkR, zz, enc, info): kemContext = concat(enc, pkR) secret = Extract(zero(Nh), zz) return SetupCore(mode_base, secret, kemContext, info)</p>
+<p id="rfc.section.6.1.p.5">def SetupBaseI(pkR, info): zz, enc = Encap(pkR) return enc, SetupBase(pkR, zz, enc, info)</p>
+<p id="rfc.section.6.1.p.6">def SetupBaseR(enc, skR, info): zz = Decap(enc, skR) return SetupBase(pk(skR), zz, enc, info) ~~~~~</p>
+<p id="rfc.section.6.1.p.7">Note that the context construction in the SetupCore procedure is equivalent to serializing a structure of the following form in the TLS presentation syntax:</p>
 <pre>
 struct {
     uint16 ciphersuite;
@@ -628,7 +608,7 @@ struct {
 <p id="rfc.section.6.2.p.4">This mechanism is not suitable for use with a low-entropy password as the PSK.  A malicious recipient that does not possess the PSK can use decryption of a plaintext as an oracle for performing offline dictionary attacks.</p>
 <pre>
 def SetupPSK(pkR, psk, pskID, zz, enc, info):
-  kemContext = enc + pkR + pskID
+  kemContext = concat(enc, pkR, pskID)
   secret = Extract(psk, zz)
   return SetupCore(mode_psk, secret, kemContext, info)
 
@@ -655,8 +635,8 @@ def SetupPSKR(enc, skR, psk, pskID, info):
 <p id="rfc.section.6.3.p.5">This mechanism authenticates only the key pair of the initiator, not any other identity.  If an application wishes to authenticate some other identity for the sender (e.g., an email address or domain name), then this identity should be included in the <samp>info</samp> parameter to avoid unknown key share attacks.</p>
 <pre>
 def SetupAuth(pkR, pkI, zz, enc, info):
-  kemContext = enc + pkR + pkI
-  secret = Extract(0*Nh, zz)
+  kemContext = concat(enc, pkR, pkI)
+  secret = Extract(zero(Nh), zz)
   return SetupCore(mode_auth, secret, kemContext, info)
 
 def SetupAuthI(pkR, skI, info):
@@ -687,7 +667,7 @@ def SetupAuthR(enc, skR, pkI, info):
 [[ TODO: Check for overflow, a la TLS ]]
 def Context.Nonce(seq):
   encSeq = encode_big_endian(seq, len(self.nonce))
-  return self.nonce ^ encSeq
+  return xor(self.nonce, encSeq)
 
 def Context.Seal(aad, pt):
   ct = Seal(self.key, self.Nonce(self.seq), aad, pt)

@@ -5,8 +5,8 @@
 Network Working Group                                          R. Barnes
 Internet-Draft                                                     Cisco
 Intended status: Informational                              K. Bhargavan
-Expires: December 20, 2019                                         Inria
-                                                           June 18, 2019
+Expires: January 2, 2020                                           Inria
+                                                           July 01, 2019
 
 
                       Hybrid Public Key Encryption
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 20, 2019.
+   This Internet-Draft will expire on January 2, 2020.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019               [Page 1]
+Barnes & Bhargavan       Expires January 2, 2020                [Page 1]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    to this document.  Code Components extracted from this document must
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019               [Page 2]
+Barnes & Bhargavan       Expires January 2, 2020                [Page 2]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    Currently, there are numerous competing and non-interoperable
@@ -165,19 +165,24 @@ Internet-Draft                    HPKE                         June 2019
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019               [Page 3]
+Barnes & Bhargavan       Expires January 2, 2020                [Page 3]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    o  "encode_big_endian(x, n)": An octet string encoding the integer
       value "x" as an n-byte big-endian value
 
-   o  "+": Concatenation of octet strings; "0x01 + 0x02 = 0x0102"
+   o  "concat(x0, ..., xN)": Concatenation of octet strings.  An empty
+      value is treated as equivalent to an empty octet string.
+      "concat(0x01, None, 0x0203) = 0x010203"
 
-   o  "*": Repetition of an octet string; "0x01 * 4 = 0x01010101"
+   o  "zero(n)": An all-zero octet string of length "n"; "zero(4) =
+      0x00000000"
 
-   o  "^": XOR of octet strings; "0xF0F0 ^ 0x1234 = 0xE2C4"
+   o  "xor(a,b)": XOR of octet strings; "xor(0xF0F0, 0x1234) = 0xE2C4".
+      It is an error to call this function with two arguments of unequal
+      length.
 
 5.  Cryptographic Dependencies
 
@@ -212,19 +217,21 @@ Internet-Draft                    HPKE                         June 2019
 
    o  A Key Derivation Function:
 
+
+
+
+
+Barnes & Bhargavan       Expires January 2, 2020                [Page 4]
+
+Internet-Draft                    HPKE                         July 2019
+
+
       *  Extract(salt, IKM): Extract a pseudorandom key of fixed length
          from input keying material "IKM" and an optional octet string
          "salt"
 
       *  Expand(PRK, info, L): Expand a pseudorandom key "PRK" using
          optional string "info" into "L" bytes of output keying material
-
-
-
-Barnes & Bhargavan      Expires December 20, 2019               [Page 4]
-
-Internet-Draft                    HPKE                         June 2019
-
 
       *  Nh: The output size of the Extract function
 
@@ -270,16 +277,9 @@ Internet-Draft                    HPKE                         June 2019
 
 
 
-
-
-
-
-
-
-
-Barnes & Bhargavan      Expires December 20, 2019               [Page 5]
+Barnes & Bhargavan       Expires January 2, 2020                [Page 5]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    def Encap(pkR):
@@ -294,13 +294,13 @@ Internet-Draft                    HPKE                         June 2019
 
    def AuthEncap(pkR, skI):
      skE, pkE = GenerateKeyPair()
-     zz = DH(skE, pkR) + DH(skI, pkR)
+     zz = concat(DH(skE, pkR), DH(skI, pkR))
      enc = Marshal(pkE)
      return zz, enc
 
    def AuthDecap(enc, skR, pkI):
      pkE = Unmarshal(enc)
-     return DH(skR, pkE) + DH(skR, pkI)
+     return concat(DH(skR, pkE), DH(skR, pkI))
 
    The GenerateKeyPair, Marshal, and Unmarshal functions are the same as
    for the underlying DH group.  The Marshal functions for the curves
@@ -333,9 +333,9 @@ Internet-Draft                    HPKE                         June 2019
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019               [Page 6]
+Barnes & Bhargavan       Expires January 2, 2020                [Page 6]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    possession of a pre-shared key, and one of which authenticates
@@ -378,42 +378,31 @@ Internet-Draft                    HPKE                         June 2019
    "info" parameter provided by the caller.
 
    Note that the "SetupCore()" method is also used by the other HPKE
-   variants describe below.  The value "0*Nh" in the "SetupBase()"
-   procedure represents an all-zero octet string of length "Nh".
+   variants describe below.  ~~~~~ def SetupCore(mode, secret,
+   kemContext, info): context = Concat(ciphersuite, mode,
+   len(kemContext), kemContext, len(info), info) key = Expand(secret,
+   concat("hpke key", context), Nk) nonce = Expand(secret, concat("hpke
+   nonce", context), Nn) return Context(key, nonce)
 
 
 
 
 
 
-
-
-
-Barnes & Bhargavan      Expires December 20, 2019               [Page 7]
+Barnes & Bhargavan       Expires January 2, 2020                [Page 7]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
-   def SetupCore(mode, secret, kemContext, info):
-     context = ciphersuite + mode +
-               len(kemContext) + kemContext +
-               len(info) + info
-     key = Expand(secret, "hpke key" + context, Nk)
-     nonce = Expand(secret, "hpke nonce" + context, Nn)
-     return Context(key, nonce)
+   def SetupBase(pkR, zz, enc, info): kemContext = concat(enc, pkR)
+   secret = Extract(zero(Nh), zz) return SetupCore(mode_base, secret,
+   kemContext, info)
 
-   def SetupBase(pkR, zz, enc, info):
-     kemContext = enc + pkR
-     secret = Extract(0*Nh, zz)
-     return SetupCore(mode_base, secret, kemContext, info)
+   def SetupBaseI(pkR, info): zz, enc = Encap(pkR) return enc,
+   SetupBase(pkR, zz, enc, info)
 
-   def SetupBaseI(pkR, info):
-     zz, enc = Encap(pkR)
-     return enc, SetupBase(pkR, zz, enc, info)
-
-   def SetupBaseR(enc, skR, info):
-     zz = Decap(enc, skR)
-     return SetupBase(pk(skR), zz, enc, info)
+   def SetupBaseR(enc, skR, info): zz = Decap(enc, skR) return
+   SetupBase(pk(skR), zz, enc, info) ~~~~~
 
    Note that the context construction in the SetupCore procedure is
    equivalent to serializing a structure of the following form in the
@@ -441,22 +430,28 @@ Internet-Draft                    HPKE                         June 2019
    o  The PSK ID is added to the context string used as the "info" input
       to the KDF
 
-
-
-
-
-Barnes & Bhargavan      Expires December 20, 2019               [Page 8]
-
-Internet-Draft                    HPKE                         June 2019
-
-
    This mechanism is not suitable for use with a low-entropy password as
    the PSK.  A malicious recipient that does not possess the PSK can use
    decryption of a plaintext as an oracle for performing offline
    dictionary attacks.
 
+
+
+
+
+
+
+
+
+
+
+Barnes & Bhargavan       Expires January 2, 2020                [Page 8]
+
+Internet-Draft                    HPKE                         July 2019
+
+
    def SetupPSK(pkR, psk, pskID, zz, enc, info):
-     kemContext = enc + pkR + pskID
+     kemContext = concat(enc, pkR, pskID)
      secret = Extract(psk, zz)
      return SetupCore(mode_psk, secret, kemContext, info)
 
@@ -501,14 +496,19 @@ Internet-Draft                    HPKE                         June 2019
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019               [Page 9]
+
+
+
+
+
+Barnes & Bhargavan       Expires January 2, 2020                [Page 9]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    def SetupAuth(pkR, pkI, zz, enc, info):
-     kemContext = enc + pkR + pkI
-     secret = Extract(0*Nh, zz)
+     kemContext = concat(enc, pkR, pkI)
+     secret = Extract(zero(Nh), zz)
      return SetupCore(mode_auth, secret, kemContext, info)
 
    def SetupAuthI(pkR, skI, info):
@@ -557,9 +557,9 @@ Internet-Draft                    HPKE                         June 2019
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019              [Page 10]
+Barnes & Bhargavan       Expires January 2, 2020               [Page 10]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    It is up to the application to ensure that encryptions and
@@ -569,7 +569,7 @@ Internet-Draft                    HPKE                         June 2019
    [[ TODO: Check for overflow, a la TLS ]]
    def Context.Nonce(seq):
      encSeq = encode_big_endian(seq, len(self.nonce))
-     return self.nonce ^ encSeq
+     return xor(self.nonce, encSeq)
 
    def Context.Seal(aad, pt):
      ct = Seal(self.key, self.Nonce(self.seq), aad, pt)
@@ -613,9 +613,9 @@ Internet-Draft                    HPKE                         June 2019
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019              [Page 11]
+Barnes & Bhargavan       Expires January 2, 2020               [Page 11]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    For the NIST curves P-256 and P-521, the Marshal function of the DH
@@ -669,9 +669,9 @@ Internet-Draft                    HPKE                         June 2019
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019              [Page 12]
+Barnes & Bhargavan       Expires January 2, 2020               [Page 12]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
@@ -725,9 +725,9 @@ Internet-Draft                    HPKE                         June 2019
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019              [Page 13]
+Barnes & Bhargavan       Expires January 2, 2020               [Page 13]
 
-Internet-Draft                    HPKE                         June 2019
+Internet-Draft                    HPKE                         July 2019
 
 
    [S01]      "A Proposal for an ISO Standard for Public Key Encryption
@@ -781,4 +781,4 @@ Authors' Addresses
 
 
 
-Barnes & Bhargavan      Expires December 20, 2019              [Page 14]
+Barnes & Bhargavan       Expires January 2, 2020               [Page 14]
