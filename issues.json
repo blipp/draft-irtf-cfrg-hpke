@@ -1,6 +1,114 @@
 [
 
   {
+    "url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/3",
+    "repository_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke",
+    "labels_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/3/labels{/name}",
+    "comments_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/3/comments",
+    "events_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/3/events",
+    "html_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/3",
+    "id": 462865484,
+    "node_id": "MDExOlB1bGxSZXF1ZXN0MjkzNDYyMDYz",
+    "number": 3,
+    "title": "Use individual algorithm identifiers as opposed to a suite ",
+    "user": {
+      "login": "bifurcation",
+      "id": 75597,
+      "node_id": "MDQ6VXNlcjc1NTk3",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/75597?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/bifurcation",
+      "html_url": "https://github.com/bifurcation",
+      "followers_url": "https://api.github.com/users/bifurcation/followers",
+      "following_url": "https://api.github.com/users/bifurcation/following{/other_user}",
+      "gists_url": "https://api.github.com/users/bifurcation/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/bifurcation/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/bifurcation/subscriptions",
+      "organizations_url": "https://api.github.com/users/bifurcation/orgs",
+      "repos_url": "https://api.github.com/users/bifurcation/repos",
+      "events_url": "https://api.github.com/users/bifurcation/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/bifurcation/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2019-07-01T19:08:10Z",
+    "updated_at": "2019-07-01T19:09:18Z",
+    "closed_at": null,
+    "author_association": "COLLABORATOR",
+    "pull_request": {
+      "url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/pulls/3",
+      "html_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/3",
+      "diff_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/3.diff",
+      "patch_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/3.patch"
+    },
+    "body": "This has been the trend, e.g., with TLS 1.3, and there's no inherent need to conjoin these choices here, except for \"level matching\".\r\n\r\nNB: Based on top of #1 and #2, so this will read better once they're landed"
+  },
+  {
+    "url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/2",
+    "repository_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke",
+    "labels_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/2/labels{/name}",
+    "comments_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/2/comments",
+    "events_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/2/events",
+    "html_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/2",
+    "id": 462854661,
+    "node_id": "MDExOlB1bGxSZXF1ZXN0MjkzNDUzNDgx",
+    "number": 2,
+    "title": "Consolidate the key schedule",
+    "user": {
+      "login": "bifurcation",
+      "id": 75597,
+      "node_id": "MDQ6VXNlcjc1NTk3",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/75597?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/bifurcation",
+      "html_url": "https://github.com/bifurcation",
+      "followers_url": "https://api.github.com/users/bifurcation/followers",
+      "following_url": "https://api.github.com/users/bifurcation/following{/other_user}",
+      "gists_url": "https://api.github.com/users/bifurcation/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/bifurcation/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/bifurcation/subscriptions",
+      "organizations_url": "https://api.github.com/users/bifurcation/orgs",
+      "repos_url": "https://api.github.com/users/bifurcation/repos",
+      "events_url": "https://api.github.com/users/bifurcation/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/bifurcation/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2019-07-01T18:39:33Z",
+    "updated_at": "2019-07-02T16:44:24Z",
+    "closed_at": null,
+    "author_association": "COLLABORATOR",
+    "pull_request": {
+      "url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/pulls/2",
+      "html_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/2",
+      "diff_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/2.diff",
+      "patch_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/2.patch"
+    },
+    "body": "Prior versions had a lot of repetitive logic in the `SetupX` functions.  This PR consolidates that logic into a single `KeySchedule` method with some optional inputs to reflect variation among the modes.  As a side effect, it's now trivial to add a mode where the initiator is authenticated to hold *both* a PSK and a private key.\r\n\r\nNB: Based on top of #1, so this will read better once that is landed."
+  },
+  {
     "url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/1",
     "repository_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke",
     "labels_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/1/labels{/name}",
@@ -43,7 +151,7 @@
     "milestone": null,
     "comments": 0,
     "created_at": "2019-06-18T01:17:07Z",
-    "updated_at": "2019-07-01T17:57:35Z",
+    "updated_at": "2019-07-02T16:08:26Z",
     "closed_at": null,
     "author_association": "COLLABORATOR",
     "pull_request": {
