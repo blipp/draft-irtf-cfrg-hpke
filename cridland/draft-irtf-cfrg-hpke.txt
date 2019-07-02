@@ -5,8 +5,8 @@
 Network Working Group                                          R. Barnes
 Internet-Draft                                                     Cisco
 Intended status: Informational                              K. Bhargavan
-Expires: January 2, 2020                                           Inria
-                                                           July 01, 2019
+Expires: January 3, 2020                                           Inria
+                                                           July 02, 2019
 
 
                       Hybrid Public Key Encryption
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 2, 2020.
+   This Internet-Draft will expire on January 3, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 1]
+Barnes & Bhargavan       Expires January 3, 2020                [Page 1]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 2]
+Barnes & Bhargavan       Expires January 3, 2020                [Page 2]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -158,14 +158,14 @@ Internet-Draft                    HPKE                         July 2019
    o  "(skX, pkX)": A KEM key pair used in role X; "skX" is the private
       key and "pkX" is the public key
 
-   o  "pk(skX)": The public key corresponding to a private key
+   o  "pk(skX)": The public key corresponding to private key "skX"
 
    o  "len(x)": The length of the octet string "x", expressed as a two-
       octet unsigned integer in network (big-endian) byte order
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 3]
+Barnes & Bhargavan       Expires January 3, 2020                [Page 3]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -173,11 +173,10 @@ Internet-Draft                    HPKE                         July 2019
    o  "encode_big_endian(x, n)": An octet string encoding the integer
       value "x" as an n-byte big-endian value
 
-   o  "concat(x0, ..., xN)": Concatenation of octet strings.  An empty
-      value is treated as equivalent to an empty octet string.
-      "concat(0x01, None, 0x0203) = 0x010203"
+   o  "concat(x0, ..., xN)": Concatenation of octet strings.
+      "concat(0x01, 0x0203, 0x040506) = 0x010203040506"
 
-   o  "zero(n)": An all-zero octet string of length "n"; "zero(4) =
+   o  "zero(n)": An all-zero octet string of length "n". "zero(4) =
       0x00000000"
 
    o  "xor(a,b)": XOR of octet strings; "xor(0xF0F0, 0x1234) = 0xE2C4".
@@ -221,7 +220,8 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 4]
+
+Barnes & Bhargavan       Expires January 3, 2020                [Page 4]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -277,7 +277,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 5]
+Barnes & Bhargavan       Expires January 3, 2020                [Page 5]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -333,7 +333,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 6]
+Barnes & Bhargavan       Expires January 3, 2020                [Page 6]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -379,7 +379,7 @@ Internet-Draft                    HPKE                         July 2019
 
    Note that the "SetupCore()" method is also used by the other HPKE
    variants describe below.  ~~~~~ def SetupCore(mode, secret,
-   kemContext, info): context = Concat(ciphersuite, mode,
+   kemContext, info): context = concat(ciphersuite, mode,
    len(kemContext), kemContext, len(info), info) key = Expand(secret,
    concat("hpke key", context), Nk) nonce = Expand(secret, concat("hpke
    nonce", context), Nn) return Context(key, nonce)
@@ -389,7 +389,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 7]
+Barnes & Bhargavan       Expires January 3, 2020                [Page 7]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -445,7 +445,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 8]
+Barnes & Bhargavan       Expires January 3, 2020                [Page 8]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -501,7 +501,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020                [Page 9]
+Barnes & Bhargavan       Expires January 3, 2020                [Page 9]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -557,7 +557,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020               [Page 10]
+Barnes & Bhargavan       Expires January 3, 2020               [Page 10]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -613,7 +613,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020               [Page 11]
+Barnes & Bhargavan       Expires January 3, 2020               [Page 11]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -669,7 +669,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020               [Page 12]
+Barnes & Bhargavan       Expires January 3, 2020               [Page 12]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -725,7 +725,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020               [Page 13]
+Barnes & Bhargavan       Expires January 3, 2020               [Page 13]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -781,4 +781,4 @@ Authors' Addresses
 
 
 
-Barnes & Bhargavan       Expires January 2, 2020               [Page 14]
+Barnes & Bhargavan       Expires January 3, 2020               [Page 14]
