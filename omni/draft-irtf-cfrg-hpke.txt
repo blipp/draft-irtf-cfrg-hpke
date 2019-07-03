@@ -5,8 +5,8 @@
 Network Working Group                                          R. Barnes
 Internet-Draft                                                     Cisco
 Intended status: Informational                              K. Bhargavan
-Expires: January 3, 2020                                           Inria
-                                                           July 02, 2019
+Expires: January 4, 2020                                           Inria
+                                                           July 03, 2019
 
 
                       Hybrid Public Key Encryption
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 3, 2020.
+   This Internet-Draft will expire on January 4, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Barnes & Bhargavan       Expires January 3, 2020                [Page 1]
+Barnes & Bhargavan       Expires January 4, 2020                [Page 1]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -73,18 +73,18 @@ Table of Contents
      5.1.  DH-Based KEM  . . . . . . . . . . . . . . . . . . . . . .   5
    6.  Hybrid Public Key Encryption  . . . . . . . . . . . . . . . .   6
      6.1.  Key Schedule  . . . . . . . . . . . . . . . . . . . . . .   7
-     6.2.  Encryption to a Public Key  . . . . . . . . . . . . . . .  10
-     6.3.  Authentication using a Pre-Shared Key . . . . . . . . . .  10
-     6.4.  Authentication using an Asymmetric Key  . . . . . . . . .  11
-     6.5.  Authentication using both a PSK and an Asymmetric Key . .  12
-     6.6.  Encryption and Decryption . . . . . . . . . . . . . . . .  12
-   7.  Ciphersuites  . . . . . . . . . . . . . . . . . . . . . . . .  13
+     6.2.  Encryption to a Public Key  . . . . . . . . . . . . . . .   9
+     6.3.  Authentication using a Pre-Shared Key . . . . . . . . . .   9
+     6.4.  Authentication using an Asymmetric Key  . . . . . . . . .  10
+     6.5.  Authentication using both a PSK and an Asymmetric Key . .  11
+     6.6.  Encryption and Decryption . . . . . . . . . . . . . . . .  11
+   7.  Ciphersuites  . . . . . . . . . . . . . . . . . . . . . . . .  12
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  14
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  15
-   Appendix A.  Possible TODOs . . . . . . . . . . . . . . . . . . .  16
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  14
+   Appendix A.  Possible TODOs . . . . . . . . . . . . . . . . . . .  15
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
 
 1.  Introduction
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Barnes & Bhargavan       Expires January 3, 2020                [Page 2]
+Barnes & Bhargavan       Expires January 4, 2020                [Page 2]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -165,7 +165,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 3, 2020                [Page 3]
+Barnes & Bhargavan       Expires January 4, 2020                [Page 3]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -221,7 +221,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 3, 2020                [Page 4]
+Barnes & Bhargavan       Expires January 4, 2020                [Page 4]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -277,7 +277,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 3, 2020                [Page 5]
+Barnes & Bhargavan       Expires January 4, 2020                [Page 5]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -333,7 +333,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 3, 2020                [Page 6]
+Barnes & Bhargavan       Expires January 4, 2020                [Page 6]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -389,7 +389,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 3, 2020                [Page 7]
+Barnes & Bhargavan       Expires January 4, 2020                [Page 7]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -409,102 +409,50 @@ Internet-Draft                    HPKE                         July 2019
    private key (assuming that "zz" and "enc" were generated using the
    AuthEncap / AuthDecap methods; see below).
 
+   default_pkIm = zero(Npk)
+   default_salt = zero(Nh)
+   default_pskId = zero(0)
 
+   def VerifyMode(mode, salt, pskID, pkIm):
+     got_psk = (salt != default_salt and pskID != default_pskID)
+     no_psk = (salt == default_salt and pskID == default_pskID)
+     got_pkIm = (pkIm != default_pkIm)
+     no_pkIm = (pkIm == default_pkIm)
 
+     if mode == mode_base and (got_psk or got_pkIm):
+       raise Exception("Invalid configuration for mode_base")
+     if mode == mode_psk and (no_psk or got_pkIm):
+       raise Exception("Invalid configuration for mode_psk")
+     if mode == mode_auth and (got_psk or no_pkIm):
+       raise Exception("Invalid configuration for mode_auth")
+     if mode == mode_psk_auth and (no_psk or no_pkIm):
+       raise Exception("Invalid configuration for mode_psk_auth")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Barnes & Bhargavan       Expires January 3, 2020                [Page 8]
-
-Internet-Draft                    HPKE                         July 2019
-
-
-   def SelectMode(psk, pskID, pkI):
-     if not psk and not pskID and not pkI:
-       return mode_base
-     elif psk and pskID and not pkI:
-       return mode_psk
-     elif not psk and not pskID and pkI:
-       return mode_auth
-     elif psk and pskID and pkI:
-       return mode_psk_auth
-
-     raise Exception("Invalid configuration")
-
-   def KeySchedule(pkR, zz, enc, info, psk, pskID, pkI):
-     salt = zero(Nh)
-     pskIDm = ""
-     if psk:
-       salt = psk
-       pskIDm = pskID
+   def KeySchedule(mode, pkRm, zz, enc, info, salt, pskID, pkIm):
+     VerifyMode(mode, psk, pskID, pkI)
 
      pkRm = Marshal(pkR)
-     pkIm = ""
-     if pkI:
-       pkIm = Marshal(pkI)
-
-     mode = SelectMode(psk, pskID, pkI)
      context = concat(mode, ciphersuite,
-                      len(enc), enc, len(pkRm), pkRm,
-                      len(pskIDm), pskIDm, len(pkIm), pkIm
-                      len(info), info)
+                      len(enc), enc, len(pkRm), pkRm, pkIm,
+                      len(pskIDm), pskIDm, len(info), info)
 
      secret = Extract(salt, zz)
      key = Expand(secret, concat("hpke key", context), Nk)
      nonce = Expand(secret, concat("hpke nonce", context), Nn)
      return Context(key, nonce)
 
-   Note that the context construction in the KeySchedule procedure is
-   equivalent to serializing a structure of the following form in the
-   TLS presentation syntax:
 
 
 
 
-
-
-
-
-
-
-
-
-
-Barnes & Bhargavan       Expires January 3, 2020                [Page 9]
+Barnes & Bhargavan       Expires January 4, 2020                [Page 8]
 
 Internet-Draft                    HPKE                         July 2019
 
+
+   Note that the context construction in the KeySchedule procedure is
+   equivalent to serializing a structure of the following form in the
+   TLS presentation syntax:
 
    struct {
        // Mode and algorithms
@@ -514,8 +462,8 @@ Internet-Draft                    HPKE                         July 2019
        // Public inputs to this key exchange
        opaque enc[Nenc];
        opaque pkR[Npk];
+       opaque pkI[Npk];
        opaque pskID<0..2^16-1>;
-       opaque pkI<0..2^16-1>;
 
        // Application-supplied info
        opaque info<0..2^16-1>;
@@ -534,11 +482,13 @@ Internet-Draft                    HPKE                         July 2019
 
    def SetupBaseI(pkR, info):
      zz, enc = Encap(pkR)
-     return enc, KeySchedule(pkR, zz, enc, info, None, None, None)
+     return enc, KeySchedule(mode_base, pkR, zz, enc, info,
+                             default_salt, default_pskID, default_pkIm)
 
    def SetupBaseR(enc, skR, info):
      zz = Decap(enc, skR)
-     return KeySchedule(pk(skR), zz, enc, info, None, None, None)
+     return KeySchedule(mode_base, pk(skR), zz, enc, info,
+                        default_salt, default_pskID, default_pkIm)
 
 6.3.  Authentication using a Pre-Shared Key
 
@@ -548,19 +498,20 @@ Internet-Draft                    HPKE                         July 2019
    value "psk" and another octet string "pskID" that is used to identify
    which PSK should be used.
 
+
+
+
+Barnes & Bhargavan       Expires January 4, 2020                [Page 9]
+
+Internet-Draft                    HPKE                         July 2019
+
+
    The primary differences from the base case are:
 
    o  The PSK is used as the "salt" input to the KDF (instead of 0)
 
    o  The PSK ID is added to the context string used as the "info" input
       to the KDF
-
-
-
-Barnes & Bhargavan       Expires January 3, 2020               [Page 10]
-
-Internet-Draft                    HPKE                         July 2019
-
 
    This mechanism is not suitable for use with a low-entropy password as
    the PSK.  A malicious recipient that does not possess the PSK can use
@@ -569,11 +520,13 @@ Internet-Draft                    HPKE                         July 2019
 
    def SetupPSKI(pkR, psk, pskID, info):
      zz, enc = Encap(pkR)
-     return enc, KeySchedule(pkR, zz, enc, info, psk, pskID, None)
+     return enc, KeySchedule(pkR, zz, enc, info,
+                             psk, pskId, default_pkIm)
 
    def SetupPSKR(enc, skR, psk, pskID, info):
      zz = Decap(enc, skR)
-     return KeySchedule(pk(skR), zz, enc, info, psk, pskID, None)
+     return KeySchedule(pk(skR), zz, enc, info,
+                        psk, pskId, default_pkIm)
 
 6.4.  Authentication using an Asymmetric Key
 
@@ -602,21 +555,24 @@ Internet-Draft                    HPKE                         July 2019
    name), then this identity should be included in the "info" parameter
    to avoid unknown key share attacks.
 
-   def SetupAuthI(pkR, skI, info):
-     zz, enc = AuthEncap(pkR, skI)
-     return enc, KeySchedule(pkR, zz, enc, info, None, None, pk(skI))
-
-   def SetupAuthR(enc, skR, pkI, info):
-     zz = AuthDecap(enc, skR, pkI)
-     return KeySchedule(pk(skR), zz, enc, info, None, None, pkI)
 
 
-
-
-Barnes & Bhargavan       Expires January 3, 2020               [Page 11]
+Barnes & Bhargavan       Expires January 4, 2020               [Page 10]
 
 Internet-Draft                    HPKE                         July 2019
 
+
+   def SetupAuthI(pkR, skI, info):
+     zz, enc = AuthEncap(pkR, skI)
+     pkIm = Marshal(pk(skI))
+     return enc, KeySchedule(pkR, zz, enc, info,
+                             default_salt, default_pskID, pkIm)
+
+   def SetupAuthR(enc, skR, pkI, info):
+     zz = AuthDecap(enc, skR, pkI)
+     pkIm = Marshal(pkI)
+     return KeySchedule(pk(skR), zz, enc, info,
+                        default_salt, default_pskID, pkIm)
 
 6.5.  Authentication using both a PSK and an Asymmetric Key
 
@@ -627,11 +583,13 @@ Internet-Draft                    HPKE                         July 2019
 
    def SetupAuthI(pkR, psk, pskID, skI, info):
      zz, enc = AuthEncap(pkR, skI)
-     return enc, KeySchedule(pkR, zz, enc, info, psk, pskID, pk(skI))
+     pkIm = Marshal(pk(skI))
+     return enc, KeySchedule(pkR, zz, enc, info, psk, pskID, pkIm)
 
    def SetupAuthR(enc, skR, psk, pskID, pkI, info):
      zz = AuthDecap(enc, skR, pkI)
-     return KeySchedule(pk(skR), zz, enc, info, psk, pskID, pkI)
+     pkIm = Marshal(pkI)
+     return KeySchedule(pk(skR), zz, enc, info, psk, pskID, pkIm)
 
 6.6.  Encryption and Decryption
 
@@ -653,6 +611,13 @@ Internet-Draft                    HPKE                         July 2019
 
    o  A sequence number (initially 0)
 
+
+
+Barnes & Bhargavan       Expires January 4, 2020               [Page 11]
+
+Internet-Draft                    HPKE                         July 2019
+
+
    All of these fields except the sequence number are constant.  The
    sequence number is used to provide nonce uniqueness: The nonce used
    for each encryption or decryption operation is the result of XORing
@@ -665,14 +630,6 @@ Internet-Draft                    HPKE                         July 2019
    Each encryption or decryption operation increments the sequence
    number for the context in use.  A given context SHOULD be used either
    only for encryption or only for decryption.
-
-
-
-
-Barnes & Bhargavan       Expires January 3, 2020               [Page 12]
-
-Internet-Draft                    HPKE                         July 2019
-
 
    It is up to the application to ensure that encryptions and
    decryptions are done in the proper sequence, so that the nonce values
@@ -703,6 +660,20 @@ Internet-Draft                    HPKE                         July 2019
    primitives for standard groups, including: Curve25519, Curve448
    [RFC7748], and the NIST curves P-256 and P-512.
 
+
+
+
+
+
+
+
+
+
+Barnes & Bhargavan       Expires January 4, 2020               [Page 12]
+
+Internet-Draft                    HPKE                         July 2019
+
+
       +--------+-------------------+-------------+------------------+
       | Value  | KEM               | KDF         | AEAD             |
       +--------+-------------------+-------------+------------------+
@@ -722,13 +693,6 @@ Internet-Draft                    HPKE                         July 2019
       |        |                   |             |                  |
       | 0x0008 | DHKEM(Curve448)   | HKDF-SHA512 | ChaCha20Poly1305 |
       +--------+-------------------+-------------+------------------+
-
-
-
-Barnes & Bhargavan       Expires January 3, 2020               [Page 13]
-
-Internet-Draft                    HPKE                         July 2019
-
 
    For the NIST curves P-256 and P-521, the Marshal function of the DH
    scheme produces the normal (non-compressed) representation of the
@@ -753,6 +717,18 @@ Internet-Draft                    HPKE                         July 2019
                       |                  |    |    |
                       | ChaCha20Poly1305 | 32 | 12 |
                       +------------------+----+----+
+
+
+
+
+
+
+
+
+Barnes & Bhargavan       Expires January 4, 2020               [Page 13]
+
+Internet-Draft                    HPKE                         July 2019
+
 
 8.  Security Considerations
 
@@ -779,13 +755,6 @@ Internet-Draft                    HPKE                         July 2019
               for Security", RFC 7748, DOI 10.17487/RFC7748, January
               2016, <https://www.rfc-editor.org/info/rfc7748>.
 
-
-
-Barnes & Bhargavan       Expires January 3, 2020               [Page 14]
-
-Internet-Draft                    HPKE                         July 2019
-
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -805,6 +774,17 @@ Internet-Draft                    HPKE                         July 2019
               Barnes, R., Millican, J., Omara, E., Cohn-Gordon, K., and
               R. Robert, "The Messaging Layer Security (MLS) Protocol",
               draft-ietf-mls-protocol-06 (work in progress), May 2019.
+
+
+
+
+
+
+
+Barnes & Bhargavan       Expires January 4, 2020               [Page 14]
+
+Internet-Draft                    HPKE                         July 2019
+
 
    [I-D.ietf-tls-esni]
               Rescorla, E., Oku, K., Sullivan, N., and C. Wood,
@@ -834,14 +814,6 @@ Internet-Draft                    HPKE                         July 2019
               OpenPGP", RFC 6637, DOI 10.17487/RFC6637, June 2012,
               <https://www.rfc-editor.org/info/rfc6637>.
 
-
-
-
-Barnes & Bhargavan       Expires January 3, 2020               [Page 15]
-
-Internet-Draft                    HPKE                         July 2019
-
-
    [S01]      "A Proposal for an ISO Standard for Public Key Encryption
               (verison 2.1)", n.d.,
               <http://www.shoup.net/papers/iso-2_1.pdf>.
@@ -862,6 +834,14 @@ Appendix A.  Possible TODOs
       in this document.  In order to provide known-answer tests, we
       would have to introduce a non-secure deterministic mode where the
       ephemeral key pair is derived from the inputs.  And to do that
+
+
+
+Barnes & Bhargavan       Expires January 4, 2020               [Page 15]
+
+Internet-Draft                    HPKE                         July 2019
+
+
       safely, we would need to augment the decrypt function to detect
       the deterministic mode and fail.
 
@@ -893,4 +873,24 @@ Authors' Addresses
 
 
 
-Barnes & Bhargavan       Expires January 3, 2020               [Page 16]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Barnes & Bhargavan       Expires January 4, 2020               [Page 16]
