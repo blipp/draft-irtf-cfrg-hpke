@@ -451,16 +451,17 @@ ul.toc li {
 <li>
 <samp>(skX, pkX)</samp>: A KEM key pair used in role X; <samp>skX</samp> is the private key and <samp>pkX</samp> is the public key</li>
 <li>
-<samp>pk(skX)</samp>: The public key corresponding to a private key</li>
+<samp>pk(skX)</samp>: The public key corresponding to private key <samp>skX</samp>
+</li>
 <li>
 <samp>len(x)</samp>: The length of the octet string <samp>x</samp>, expressed as a two-octet unsigned integer in network (big-endian) byte order</li>
 <li>
 <samp>encode_big_endian(x, n)</samp>: An octet string encoding the integer value <samp>x</samp> as an n-byte big-endian value</li>
 <li>
-<samp>concat(x0, ..., xN)</samp>: Concatenation of octet strings.  An empty value is treated as equivalent to an empty octet string.  <samp>concat(0x01, None, 0x0203) = 0x010203</samp>
+<samp>concat(x0, ..., xN)</samp>: Concatenation of octet strings.  <samp>concat(0x01, 0x0203, 0x040506) = 0x010203040506</samp>
 </li>
 <li>
-<samp>zero(n)</samp>: An all-zero octet string of length <samp>n</samp>; <samp>zero(4) = 0x00000000</samp>
+<samp>zero(n)</samp>: An all-zero octet string of length <samp>n</samp>. <samp>zero(4) = 0x00000000</samp>
 </li>
 <li>
 <samp>xor(a,b)</samp>: XOR of octet strings; <samp>xor(0xF0F0, 0x1234) = 0xE2C4</samp>.  It is an error to call this function with two arguments of unequal length.</li>

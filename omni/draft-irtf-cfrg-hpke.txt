@@ -158,7 +158,7 @@ Internet-Draft                    HPKE                         July 2019
    o  "(skX, pkX)": A KEM key pair used in role X; "skX" is the private
       key and "pkX" is the public key
 
-   o  "pk(skX)": The public key corresponding to a private key
+   o  "pk(skX)": The public key corresponding to private key "skX"
 
    o  "len(x)": The length of the octet string "x", expressed as a two-
       octet unsigned integer in network (big-endian) byte order
@@ -173,11 +173,10 @@ Internet-Draft                    HPKE                         July 2019
    o  "encode_big_endian(x, n)": An octet string encoding the integer
       value "x" as an n-byte big-endian value
 
-   o  "concat(x0, ..., xN)": Concatenation of octet strings.  An empty
-      value is treated as equivalent to an empty octet string.
-      "concat(0x01, None, 0x0203) = 0x010203"
+   o  "concat(x0, ..., xN)": Concatenation of octet strings.
+      "concat(0x01, 0x0203, 0x040506) = 0x010203040506"
 
-   o  "zero(n)": An all-zero octet string of length "n"; "zero(4) =
+   o  "zero(n)": An all-zero octet string of length "n". "zero(4) =
       0x00000000"
 
    o  "xor(a,b)": XOR of octet strings; "xor(0xF0F0, 0x1234) = 0xE2C4".
@@ -218,6 +217,7 @@ Internet-Draft                    HPKE                         July 2019
       *  Nenc: The length in octets of an encapsulated key from this KEM
 
       *  Npk: The length in octets of a public key for this KEM
+
 
 
 
