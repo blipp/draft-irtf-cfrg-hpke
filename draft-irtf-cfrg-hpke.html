@@ -295,7 +295,10 @@ ul.toc li {
 <link href="#rfc.section.6.4" rel="Chapter" title="6.4 Authentication using an Asymmetric Key">
 <link href="#rfc.section.6.5" rel="Chapter" title="6.5 Authentication using both a PSK and an Asymmetric Key">
 <link href="#rfc.section.6.6" rel="Chapter" title="6.6 Encryption and Decryption">
-<link href="#rfc.section.7" rel="Chapter" title="7 Ciphersuites">
+<link href="#rfc.section.7" rel="Chapter" title="7 Algorithm Identifiers">
+<link href="#rfc.section.7.1" rel="Chapter" title="7.1 Key Encapsulation Mechanisms (KEMs)">
+<link href="#rfc.section.7.2" rel="Chapter" title="7.2 Key Derivation Functions (KDFs)">
+<link href="#rfc.section.7.3" rel="Chapter" title="7.3 Authentication Encryption with Associated Data (AEAD) Functions">
 <link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations">
 <link href="#rfc.section.9" rel="Chapter" title="9 IANA Considerations">
 <link href="#rfc.references" rel="Chapter" title="10 References">
@@ -391,9 +394,15 @@ ul.toc li {
 </li>
 <li>6.6.   <a href="#rfc.section.6.6">Encryption and Decryption</a>
 </li>
-</ul><li>7.   <a href="#rfc.section.7">Ciphersuites</a>
+</ul><li>7.   <a href="#rfc.section.7">Algorithm Identifiers</a>
 </li>
-<li>8.   <a href="#rfc.section.8">Security Considerations</a>
+<ul><li>7.1.   <a href="#rfc.section.7.1">Key Encapsulation Mechanisms (KEMs)</a>
+</li>
+<li>7.2.   <a href="#rfc.section.7.2">Key Derivation Functions (KDFs)</a>
+</li>
+<li>7.3.   <a href="#rfc.section.7.3">Authentication Encryption with Associated Data (AEAD) Functions</a>
+</li>
+</ul><li>8.   <a href="#rfc.section.8">Security Considerations</a>
 </li>
 <li>9.   <a href="#rfc.section.9">IANA Considerations</a>
 </li>
@@ -506,7 +515,7 @@ ul.toc li {
 </ul>
 </li>
 </ul>
-<p id="rfc.section.5.p.3">A set of concrete instantiations of these primitives is provided in <a href="#ciphersuites" class="xref">Section 7</a>.  Ciphersuite values are two octets long.</p>
+<p id="rfc.section.5.p.3">A set of algorithm identifiers for concrete instantiations of these primitives is provided in <a href="#ciphersuites" class="xref">Section 7</a>.  Algorithm identifier values are two octets long.</p>
 <h1 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#dh-based-kem" id="dh-based-kem">DH-Based KEM</a>
 </h1>
@@ -542,7 +551,7 @@ def AuthDecap(enc, skR, pkI):
   pkE = Unmarshal(enc)
   return concat(DH(skR, pkE), DH(skR, pkI))
 </pre>
-<p id="rfc.section.5.1.p.4">The GenerateKeyPair, Marshal, and Unmarshal functions are the same as for the underlying DH group.  The Marshal functions for the curves used in the ciphersuites in {#ciphersuites} are as follows:</p>
+<p id="rfc.section.5.1.p.4">The GenerateKeyPair, Marshal, and Unmarshal functions are the same as for the underlying DH group.  The Marshal functions for the curves referenced in {#ciphersuites} are as follows:</p>
 <p></p>
 
 <ul>
@@ -588,7 +597,7 @@ def AuthDecap(enc, skR, pkI):
 <li>Use that context to encrypt or decrypt content</li>
 </ol>
 <p id="rfc.section.6.p.5">A &#8220;context&#8221; encodes the AEAD algorithm and key in use, and manages the nonces used so that the same nonce is not used with multiple plaintexts.</p>
-<p id="rfc.section.6.p.6">The procedures described in this session are laid out in a Python-like pseudocode.  The ciphersuite in use is left implicit.</p>
+<p id="rfc.section.6.p.6">The procedures described in this session are laid out in a Python-like pseudocode.  The algorithms in use are left implicit.</p>
 <h1 id="rfc.section.6.1">
 <a href="#rfc.section.6.1">6.1.</a> <a href="#creating-an-encryption-context" id="creating-an-encryption-context">Creating an Encryption Context</a>
 </h1>
@@ -778,91 +787,129 @@ def Context.Open(aad, ct):
   return pt
 </pre>
 <h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#ciphersuites" id="ciphersuites">Ciphersuites</a>
+<a href="#rfc.section.7">7.</a> <a href="#ciphersuites" id="ciphersuites">Algorithm Identifiers</a>
 </h1>
-<p id="rfc.section.7.p.1">The HPKE variants as presented will function correctly for any combination of primitives that provides the functions described above. In this section, we provide specific instantiations of these primitives for standard groups, including: Curve25519, Curve448 <a href="#RFC7748" class="xref">[RFC7748]</a>, and the NIST curves P-256 and P-512.</p>
+<h1 id="rfc.section.7.1">
+<a href="#rfc.section.7.1">7.1.</a> <a href="#key-encapsulation-mechanisms-kems" id="key-encapsulation-mechanisms-kems">Key Encapsulation Mechanisms (KEMs)</a>
+</h1>
 <table cellpadding="3" cellspacing="0" class="tt full center">
 <thead><tr>
 <th class="left">Value</th>
 <th class="left">KEM</th>
-<th class="left">KDF</th>
-<th class="left">AEAD</th>
+<th class="left">Nenc</th>
+<th class="left">Npk</th>
+<th class="left">Reference</th>
 </tr></thead>
 <tbody>
+<tr>
+<td class="left">0x0000</td>
+<td class="left">(reserved)</td>
+<td class="left">N/A</td>
+<td class="left">N/A</td>
+<td class="left">N/A</td>
+</tr>
 <tr>
 <td class="left">0x0001</td>
 <td class="left">DHKEM(P-256)</td>
-<td class="left">HKDF-SHA256</td>
-<td class="left">AES-GCM-128</td>
+<td class="left">32</td>
+<td class="left">32</td>
+<td class="left"><a href="#NISTCurves" class="xref">[NISTCurves]</a></td>
 </tr>
 <tr>
 <td class="left">0x0002</td>
-<td class="left">DHKEM(P-256)</td>
-<td class="left">HKDF-SHA256</td>
-<td class="left">ChaCha20Poly1305</td>
+<td class="left">DHKEM(Curve25519)</td>
+<td class="left">32</td>
+<td class="left">32</td>
+<td class="left"><a href="#RFC7748" class="xref">[RFC7748]</a></td>
 </tr>
 <tr>
 <td class="left">0x0003</td>
-<td class="left">DHKEM(Curve25519)</td>
-<td class="left">HKDF-SHA256</td>
-<td class="left">AES-GCM-128</td>
+<td class="left">DHKEM(P-521)</td>
+<td class="left">65</td>
+<td class="left">65</td>
+<td class="left"><a href="#NISTCurves" class="xref">[NISTCurves]</a></td>
 </tr>
 <tr>
 <td class="left">0x0004</td>
-<td class="left">DHKEM(Curve25519)</td>
-<td class="left">HKDF-SHA256</td>
-<td class="left">ChaCha20Poly1305</td>
-</tr>
-<tr>
-<td class="left">0x0005</td>
-<td class="left">DHKEM(P-521)</td>
-<td class="left">HKDF-SHA512</td>
-<td class="left">AES-GCM-256</td>
-</tr>
-<tr>
-<td class="left">0x0006</td>
-<td class="left">DHKEM(P-521)</td>
-<td class="left">HKDF-SHA512</td>
-<td class="left">ChaCha20Poly1305</td>
-</tr>
-<tr>
-<td class="left">0x0007</td>
 <td class="left">DHKEM(Curve448)</td>
-<td class="left">HKDF-SHA512</td>
-<td class="left">AES-GCM-256</td>
-</tr>
-<tr>
-<td class="left">0x0008</td>
-<td class="left">DHKEM(Curve448)</td>
-<td class="left">HKDF-SHA512</td>
-<td class="left">ChaCha20Poly1305</td>
+<td class="left">56</td>
+<td class="left">56</td>
+<td class="left"><a href="#RFC7748" class="xref">[RFC7748]</a></td>
 </tr>
 </tbody>
 </table>
-<p id="rfc.section.7.p.2">For the NIST curves P-256 and P-521, the Marshal function of the DH scheme produces the normal (non-compressed) representation of the public key, according to <a href="#SECG" class="xref">[SECG]</a>.  When these curves are used, the recipient of an HPKE ciphertext MUST validate that the ephemeral public key <samp>pkE</samp> is on the curve.  The relevant validation procedures are defined in <a href="#keyagreement" class="xref">[keyagreement]</a></p>
-<p id="rfc.section.7.p.3">For the CFRG curves Curve25519 and Curve448, the Marshal function is the identity function, since these curves already use fixed-length octet strings for public keys.</p>
-<p id="rfc.section.7.p.4">The values <samp>Nk</samp> and <samp>Nn</samp> for the AEAD algorithms referenced above are as follows:</p>
+<p id="rfc.section.7.1.p.1">For the NIST curves P-256 and P-521, the Marshal function of the DH scheme produces the normal (non-compressed) representation of the public key, according to <a href="#SECG" class="xref">[SECG]</a>.  When these curves are used, the recipient of an HPKE ciphertext MUST validate that the ephemeral public key <samp>pkE</samp> is on the curve.  The relevant validation procedures are defined in <a href="#keyagreement" class="xref">[keyagreement]</a></p>
+<p id="rfc.section.7.1.p.2">For the CFRG curves Curve25519 and Curve448, the Marshal function is the identity function, since these curves already use fixed-length octet strings for public keys.</p>
+<h1 id="rfc.section.7.2">
+<a href="#rfc.section.7.2">7.2.</a> <a href="#key-derivation-functions-kdfs" id="key-derivation-functions-kdfs">Key Derivation Functions (KDFs)</a>
+</h1>
 <table cellpadding="3" cellspacing="0" class="tt full center">
 <thead><tr>
-<th class="left">AEAD</th>
-<th class="left">Nk</th>
-<th class="left">Nn</th>
+<th class="left">Value</th>
+<th class="left">KDF</th>
+<th class="left">Nh</th>
+<th class="left">Reference</th>
 </tr></thead>
 <tbody>
 <tr>
+<td class="left">0x0000</td>
+<td class="left">(reserved)</td>
+<td class="left">N/A</td>
+<td class="left">N/A</td>
+</tr>
+<tr>
+<td class="left">0x0001</td>
+<td class="left">HKDF-SHA256</td>
+<td class="left">32</td>
+<td class="left"><a href="#RFC5869" class="xref">[RFC5869]</a></td>
+</tr>
+<tr>
+<td class="left">0x0002</td>
+<td class="left">HKDF-SHA512</td>
+<td class="left">64</td>
+<td class="left"><a href="#RFC5869" class="xref">[RFC5869]</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="rfc.section.7.3">
+<a href="#rfc.section.7.3">7.3.</a> <a href="#authentication-encryption-with-associated-data-aead-functions" id="authentication-encryption-with-associated-data-aead-functions">Authentication Encryption with Associated Data (AEAD) Functions</a>
+</h1>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<thead><tr>
+<th class="left">Value</th>
+<th class="left">AEAD</th>
+<th class="left">Nk</th>
+<th class="left">Nn</th>
+<th class="left">Reference</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">0x0000</td>
+<td class="left">(reserved)</td>
+<td class="left">N/A</td>
+<td class="left">N/A</td>
+<td class="left">N/A</td>
+</tr>
+<tr>
+<td class="left">0x0001</td>
 <td class="left">AES-GCM-128</td>
 <td class="left">16</td>
 <td class="left">12</td>
+<td class="left"><a href="#GCM" class="xref">[GCM]</a></td>
 </tr>
 <tr>
+<td class="left">0x0002</td>
 <td class="left">AES-GCM-256</td>
 <td class="left">32</td>
 <td class="left">12</td>
+<td class="left"><a href="#GCM" class="xref">[GCM]</a></td>
 </tr>
 <tr>
+<td class="left">0x0003</td>
 <td class="left">ChaCha20Poly1305</td>
 <td class="left">32</td>
 <td class="left">12</td>
+<td class="left"><a href="#RFC8439" class="xref">[RFC8439]</a></td>
 </tr>
 </tbody>
 </table>
@@ -873,7 +920,7 @@ def Context.Open(aad, ct):
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
-<p id="rfc.section.9.p.1">[[ OPEN ISSUE: Should the above table be in an IANA registry? ]]</p>
+<p id="rfc.section.9.p.1">[[ TODO: Make IANA registries for the above ]]</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">10.</a> References</h1>
 <h1 id="rfc.references.1">
@@ -888,11 +935,6 @@ def Context.Open(aad, ct):
 <td class="reference"><b id="RFC5116">[RFC5116]</b></td>
 <td class="top">
 <a>McGrew, D.</a>, "<a href="https://tools.ietf.org/html/rfc5116">An Interface and Algorithms for Authenticated Encryption</a>", RFC 5116, DOI 10.17487/RFC5116, January 2008.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC7748">[RFC7748]</b></td>
-<td class="top">
-<a>Langley, A.</a>, <a>Hamburg, M.</a> and <a>S. Turner</a>, "<a href="https://tools.ietf.org/html/rfc7748">Elliptic Curves for Security</a>", RFC 7748, DOI 10.17487/RFC7748, January 2016.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC8174">[RFC8174]</b></td>
@@ -910,6 +952,11 @@ def Context.Open(aad, ct):
 <tr>
 <td class="reference"><b id="fiveG">[fiveG]</b></td>
 <td class="top">"<a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3169">Security architecture and procedures for 5G System</a>", n.d..</td>
+</tr>
+<tr>
+<td class="reference"><b id="GCM">[GCM]</b></td>
+<td class="top">
+<a>Dworkin, M.</a>, "<a>Recommendation for block cipher modes of operation :</a>", National Institute of Standards and Technology report, DOI 10.6028/nist.sp.800-38d, 2007.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-mls-protocol">[I-D.ietf-mls-protocol]</b></td>
@@ -939,9 +986,28 @@ def Context.Open(aad, ct):
 <td class="top">"<a href="http://sceweb.sce.uhcl.edu/yang/teaching/csci5234WebSecurityFall2011/Chaum-blind-signatures.PDF">A Comparison of the Standardized Versions of ECIES</a>", n.d..</td>
 </tr>
 <tr>
+<td class="reference"><b id="NISTCurves">[NISTCurves]</b></td>
+<td class="top">"<a>Digital Signature Standard (DSS)</a>", National Institute of Standards and Technology report, DOI 10.6028/nist.fips.186-4, July 2013.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5869">[RFC5869]</b></td>
+<td class="top">
+<a>Krawczyk, H.</a> and <a>P. Eronen</a>, "<a href="https://tools.ietf.org/html/rfc5869">HMAC-based Extract-and-Expand Key Derivation Function (HKDF)</a>", RFC 5869, DOI 10.17487/RFC5869, May 2010.</td>
+</tr>
+<tr>
 <td class="reference"><b id="RFC6637">[RFC6637]</b></td>
 <td class="top">
 <a>Jivsov, A.</a>, "<a href="https://tools.ietf.org/html/rfc6637">Elliptic Curve Cryptography (ECC) in OpenPGP</a>", RFC 6637, DOI 10.17487/RFC6637, June 2012.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7748">[RFC7748]</b></td>
+<td class="top">
+<a>Langley, A.</a>, <a>Hamburg, M.</a> and <a>S. Turner</a>, "<a href="https://tools.ietf.org/html/rfc7748">Elliptic Curves for Security</a>", RFC 7748, DOI 10.17487/RFC7748, January 2016.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8439">[RFC8439]</b></td>
+<td class="top">
+<a>Nir, Y.</a> and <a>A. Langley</a>, "<a href="https://tools.ietf.org/html/rfc8439">ChaCha20 and Poly1305 for IETF Protocols</a>", RFC 8439, DOI 10.17487/RFC8439, June 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="S01">[S01]</b></td>
