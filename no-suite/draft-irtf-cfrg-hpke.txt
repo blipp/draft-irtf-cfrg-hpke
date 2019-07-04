@@ -372,7 +372,7 @@ Internet-Draft                    HPKE                         July 2019
    plaintexts.
 
    The procedures described in this session are laid out in a Python-
-   like pseudocode.  The algorithms in use is left implicit.
+   like pseudocode.  The algorithms in use are left implicit.
 
 6.1.  Creating an Encryption Context
 
