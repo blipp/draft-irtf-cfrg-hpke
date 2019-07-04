@@ -5,8 +5,8 @@
 Network Working Group                                          R. Barnes
 Internet-Draft                                                     Cisco
 Intended status: Informational                              K. Bhargavan
-Expires: January 4, 2020                                           Inria
-                                                           July 03, 2019
+Expires: January 5, 2020                                           Inria
+                                                           July 04, 2019
 
 
                       Hybrid Public Key Encryption
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 4, 2020.
+   This Internet-Draft will expire on January 5, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020                [Page 1]
+Barnes & Bhargavan       Expires January 5, 2020                [Page 1]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -72,20 +72,20 @@ Table of Contents
    5.  Cryptographic Dependencies  . . . . . . . . . . . . . . . . .   4
      5.1.  DH-Based KEM  . . . . . . . . . . . . . . . . . . . . . .   5
    6.  Hybrid Public Key Encryption  . . . . . . . . . . . . . . . .   6
-     6.1.  Key Schedule  . . . . . . . . . . . . . . . . . . . . . .   7
-     6.2.  Encryption to a Public Key  . . . . . . . . . . . . . . .   9
-     6.3.  Authentication using a Pre-Shared Key . . . . . . . . . .   9
-     6.4.  Authentication using an Asymmetric Key  . . . . . . . . .  10
-     6.5.  Authentication using both a PSK and an Asymmetric Key . .  11
-     6.6.  Encryption and Decryption . . . . . . . . . . . . . . . .  11
-   7.  Ciphersuites  . . . . . . . . . . . . . . . . . . . . . . . .  12
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  14
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  14
-   Appendix A.  Possible TODOs . . . . . . . . . . . . . . . . . . .  15
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
+     6.1.  Creating an Encryption Context  . . . . . . . . . . . . .   7
+     6.2.  Encryption to a Public Key  . . . . . . . . . . . . . . .  10
+     6.3.  Authentication using a Pre-Shared Key . . . . . . . . . .  10
+     6.4.  Authentication using an Asymmetric Key  . . . . . . . . .  11
+     6.5.  Authentication using both a PSK and an Asymmetric Key . .  12
+     6.6.  Encryption and Decryption . . . . . . . . . . . . . . . .  12
+   7.  Ciphersuites  . . . . . . . . . . . . . . . . . . . . . . . .  13
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  15
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  15
+   Appendix A.  Possible TODOs . . . . . . . . . . . . . . . . . . .  16
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020                [Page 2]
+Barnes & Bhargavan       Expires January 5, 2020                [Page 2]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -165,7 +165,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020                [Page 3]
+Barnes & Bhargavan       Expires January 5, 2020                [Page 3]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -221,7 +221,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020                [Page 4]
+Barnes & Bhargavan       Expires January 5, 2020                [Page 4]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -277,7 +277,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020                [Page 5]
+Barnes & Bhargavan       Expires January 5, 2020                [Page 5]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -333,7 +333,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020                [Page 6]
+Barnes & Bhargavan       Expires January 5, 2020                [Page 6]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -368,11 +368,11 @@ Internet-Draft                    HPKE                         July 2019
    The procedures described in this session are laid out in a Python-
    like pseudocode.  The ciphersuite in use is left implicit.
 
-6.1.  Key Schedule
+6.1.  Creating an Encryption Context
 
    The variants of HPKE defined in this document share a common
-   mechanism for translating the inputs to the protocol into an
-   encryption context.  The inputs to the key schedule are as follows:
+   mechanism for translating the protocol inputs into an encryption
+   context.  The key schedule inputs are as follows:
 
    o  "pkR" - The receiver's public key
 
@@ -380,27 +380,31 @@ Internet-Draft                    HPKE                         July 2019
 
    o  "enc" - An encapsulated key produced by the KEM for the receiver
 
-   o  "info" (optional) - Application-supplied information
+   o  "info" - Application-supplied information (optional; default value
+      "")
 
-   o  "psk" (optional) - A pre-shared secret held by both the initiator
-      and the receiver.
-
-   o  "pskID" (optional) - An identifier for the PSK
-
+   o  "psk" - A pre-shared secret held by both the initiator and the
+      receiver (optional; default value "zero(Nh)").
 
 
-Barnes & Bhargavan       Expires January 4, 2020                [Page 7]
+
+
+Barnes & Bhargavan       Expires January 5, 2020                [Page 7]
 
 Internet-Draft                    HPKE                         July 2019
 
 
-   o  "pkI" (optional) - The initiator's public key
+   o  "pskID" - An identifier for the PSK (optional; default value """ =
+      zero(0)"
 
-   If any of the optional values is not present (e.g., set to "None" in
-   a Python implementation), then it is treated in the same way as an
-   empty octet string.
+   o  "pkI" - The initiator's public key (optional; default value
+      "zero(Npk)")
 
-   The key and nonce produced by this algorithm have the property that
+   The "psk" and "pskID" fields MUST appear together or not at all.
+   That is, if a non-default value is provided for one of them, then the
+   other MUST be set to a non-default value.
+
+   The key and nonce computed by this algorithm have the property that
    they are only known to the holder of the receipient private key, and
    the party that ran the KEM to generate "zz" and "enc".  If the "psk"
    and "pskID" arguments are provided, then the recipient is assured
@@ -409,13 +413,50 @@ Internet-Draft                    HPKE                         July 2019
    private key (assuming that "zz" and "enc" were generated using the
    AuthEncap / AuthDecap methods; see below).
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Barnes & Bhargavan       Expires January 5, 2020                [Page 8]
+
+Internet-Draft                    HPKE                         July 2019
+
+
    default_pkIm = zero(Npk)
-   default_salt = zero(Nh)
+   default_psk = zero(Nh)
    default_pskId = zero(0)
 
-   def VerifyMode(mode, salt, pskID, pkIm):
-     got_psk = (salt != default_salt and pskID != default_pskID)
-     no_psk = (salt == default_salt and pskID == default_pskID)
+   def VerifyMode(mode, psk, pskID, pkIm):
+     got_psk = (psk != default_psk and pskID != default_pskID)
+     no_psk = (psk == default_psk and pskID == default_pskID)
      got_pkIm = (pkIm != default_pkIm)
      no_pkIm = (pkIm == default_pkIm)
 
@@ -428,31 +469,42 @@ Internet-Draft                    HPKE                         July 2019
      if mode == mode_psk_auth and (no_psk or no_pkIm):
        raise Exception("Invalid configuration for mode_psk_auth")
 
-   def KeySchedule(mode, pkRm, zz, enc, info, salt, pskID, pkIm):
+   def EncryptionContext(mode, pkRm, zz, enc, info, psk, pskID, pkIm):
      VerifyMode(mode, psk, pskID, pkI)
 
      pkRm = Marshal(pkR)
-     context = concat(mode, ciphersuite,
-                      len(enc), enc, len(pkRm), pkRm, pkIm,
-                      len(pskIDm), pskIDm, len(info), info)
+     context = concat(mode, ciphersuite, enc, pkRm, pkIm,
+                      len(pskID), pskID, len(info), info)
 
-     secret = Extract(salt, zz)
+     secret = Extract(psk, zz)
      key = Expand(secret, concat("hpke key", context), Nk)
      nonce = Expand(secret, concat("hpke nonce", context), Nn)
      return Context(key, nonce)
 
-
-
-
-
-Barnes & Bhargavan       Expires January 4, 2020                [Page 8]
-
-Internet-Draft                    HPKE                         July 2019
-
-
    Note that the context construction in the KeySchedule procedure is
    equivalent to serializing a structure of the following form in the
    TLS presentation syntax:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Barnes & Bhargavan       Expires January 5, 2020                [Page 9]
+
+Internet-Draft                    HPKE                         July 2019
+
 
    struct {
        // Mode and algorithms
@@ -483,12 +535,12 @@ Internet-Draft                    HPKE                         July 2019
    def SetupBaseI(pkR, info):
      zz, enc = Encap(pkR)
      return enc, KeySchedule(mode_base, pkR, zz, enc, info,
-                             default_salt, default_pskID, default_pkIm)
+                             default_psk, default_pskID, default_pkIm)
 
    def SetupBaseR(enc, skR, info):
      zz = Decap(enc, skR)
      return KeySchedule(mode_base, pk(skR), zz, enc, info,
-                        default_salt, default_pskID, default_pkIm)
+                        default_psk, default_pskID, default_pkIm)
 
 6.3.  Authentication using a Pre-Shared Key
 
@@ -498,17 +550,17 @@ Internet-Draft                    HPKE                         July 2019
    value "psk" and another octet string "pskID" that is used to identify
    which PSK should be used.
 
-
-
-
-Barnes & Bhargavan       Expires January 4, 2020                [Page 9]
-
-Internet-Draft                    HPKE                         July 2019
-
-
    The primary differences from the base case are:
 
    o  The PSK is used as the "salt" input to the KDF (instead of 0)
+
+
+
+
+Barnes & Bhargavan       Expires January 5, 2020               [Page 10]
+
+Internet-Draft                    HPKE                         July 2019
+
 
    o  The PSK ID is added to the context string used as the "info" input
       to the KDF
@@ -557,7 +609,11 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020               [Page 10]
+
+
+
+
+Barnes & Bhargavan       Expires January 5, 2020               [Page 11]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -566,13 +622,13 @@ Internet-Draft                    HPKE                         July 2019
      zz, enc = AuthEncap(pkR, skI)
      pkIm = Marshal(pk(skI))
      return enc, KeySchedule(pkR, zz, enc, info,
-                             default_salt, default_pskID, pkIm)
+                             default_psk, default_pskID, pkIm)
 
    def SetupAuthR(enc, skR, pkI, info):
      zz = AuthDecap(enc, skR, pkI)
      pkIm = Marshal(pkI)
      return KeySchedule(pk(skR), zz, enc, info,
-                        default_salt, default_pskID, pkIm)
+                        default_psk, default_pskID, pkIm)
 
 6.5.  Authentication using both a PSK and an Asymmetric Key
 
@@ -613,7 +669,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020               [Page 11]
+Barnes & Bhargavan       Expires January 5, 2020               [Page 12]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -669,7 +725,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020               [Page 12]
+Barnes & Bhargavan       Expires January 5, 2020               [Page 13]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -725,7 +781,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020               [Page 13]
+Barnes & Bhargavan       Expires January 5, 2020               [Page 14]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -781,7 +837,7 @@ Internet-Draft                    HPKE                         July 2019
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020               [Page 14]
+Barnes & Bhargavan       Expires January 5, 2020               [Page 15]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -837,7 +893,7 @@ Appendix A.  Possible TODOs
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020               [Page 15]
+Barnes & Bhargavan       Expires January 5, 2020               [Page 16]
 
 Internet-Draft                    HPKE                         July 2019
 
@@ -893,4 +949,4 @@ Authors' Addresses
 
 
 
-Barnes & Bhargavan       Expires January 4, 2020               [Page 16]
+Barnes & Bhargavan       Expires January 5, 2020               [Page 17]
