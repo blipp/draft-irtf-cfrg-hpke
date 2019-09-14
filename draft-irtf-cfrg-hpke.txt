@@ -5,8 +5,8 @@
 Network Working Group                                          R. Barnes
 Internet-Draft                                                     Cisco
 Intended status: Informational                              K. Bhargavan
-Expires: March 9, 2020                                             Inria
-                                                      September 06, 2019
+Expires: March 17, 2020                                            Inria
+                                                      September 14, 2019
 
 
                       Hybrid Public Key Encryption
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 9, 2020.
+   This Internet-Draft will expire on March 17, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 1]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 1]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -78,18 +78,19 @@ Table of Contents
      6.4.  Authentication using an Asymmetric Key  . . . . . . . . .  11
      6.5.  Authentication using both a PSK and an Asymmetric Key . .  12
      6.6.  Encryption and Decryption . . . . . . . . . . . . . . . .  12
-   7.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  13
-     7.1.  Key Encapsulation Mechanisms (KEMs) . . . . . . . . . . .  13
-     7.2.  Key Derivation Functions (KDFs) . . . . . . . . . . . . .  14
-     7.3.  Authenticated Encryption with Associated Data (AEAD)
-           Functions . . . . . . . . . . . . . . . . . . . . . . . .  14
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
-   9.  Message Encoding  . . . . . . . . . . . . . . . . . . . . . .  15
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  15
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  16
-   Appendix A.  Possible TODOs . . . . . . . . . . . . . . . . . . .  17
+   7.  Single-Shot APIs  . . . . . . . . . . . . . . . . . . . . . .  13
+   8.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  14
+     8.1.  Key Encapsulation Mechanisms (KEMs) . . . . . . . . . . .  14
+     8.2.  Key Derivation Functions (KDFs) . . . . . . . . . . . . .  15
+     8.3.  Authenticated Encryption with Associated Data (AEAD)
+           Functions . . . . . . . . . . . . . . . . . . . . . . . .  15
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
+   10. Message Encoding  . . . . . . . . . . . . . . . . . . . . . .  15
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .  16
+     12.2.  Informative References . . . . . . . . . . . . . . . . .  16
+   Appendix A.  Possible TODOs . . . . . . . . . . . . . . . . . . .  18
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 1.  Introduction
@@ -108,8 +109,7 @@ Table of Contents
 
 
 
-
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 2]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 2]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -165,7 +165,7 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 3]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 3]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -221,7 +221,7 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 4]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 4]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -263,7 +263,7 @@ Internet-Draft                    HPKE                    September 2019
       *  Nn: The length in octets of a nonce for this algorithm
 
    A set of algorithm identifiers for concrete instantiations of these
-   primitives is provided in Section 7.  Algorithm identifier values are
+   primitives is provided in Section 8.  Algorithm identifier values are
    two octets long.
 
 5.1.  DH-Based KEM
@@ -277,7 +277,7 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 5]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 5]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -333,7 +333,7 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 6]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 6]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -389,7 +389,7 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 7]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 7]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -445,7 +445,7 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 8]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 8]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -501,7 +501,7 @@ def EncryptionContext(mode, pkRm, zz, enc, info, psk, pskID, pkIm):
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                 [Page 9]
+Barnes & Bhargavan       Expires March 17, 2020                 [Page 9]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -557,7 +557,7 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                [Page 10]
+Barnes & Bhargavan       Expires March 17, 2020                [Page 10]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -574,12 +574,12 @@ Internet-Draft                    HPKE                    September 2019
    decryption of a plaintext as an oracle for performing offline
    dictionary attacks.
 
-   def SetupPSKI(pkR, psk, pskID, info):
+   def SetupPSKI(pkR, info, psk, pskID):
      zz, enc = Encap(pkR)
      return enc, KeySchedule(pkR, zz, enc, info,
                              psk, pskId, default_pkIm)
 
-   def SetupPSKR(enc, skR, psk, pskID, info):
+   def SetupPSKR(enc, skR, info, psk, pskID):
      zz = Decap(enc, skR)
      return KeySchedule(pk(skR), zz, enc, info,
                         psk, pskId, default_pkIm)
@@ -613,18 +613,18 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                [Page 11]
+Barnes & Bhargavan       Expires March 17, 2020                [Page 11]
 
 Internet-Draft                    HPKE                    September 2019
 
 
-   def SetupAuthI(pkR, skI, info):
+   def SetupAuthI(pkR, info, skI):
      zz, enc = AuthEncap(pkR, skI)
      pkIm = Marshal(pk(skI))
      return enc, KeySchedule(pkR, zz, enc, info,
                              default_psk, default_pskID, pkIm)
 
-   def SetupAuthR(enc, skR, pkI, info):
+   def SetupAuthR(enc, skR, info, pkI):
      zz = AuthDecap(enc, skR, pkI)
      pkIm = Marshal(pkI)
      return KeySchedule(pk(skR), zz, enc, info,
@@ -637,12 +637,12 @@ Internet-Draft                    HPKE                    September 2019
    as in the former, and as in the latter, we use the authenticated KEM
    variants.
 
-   def SetupAuthI(pkR, psk, pskID, skI, info):
+   def SetupAuthPSKI(pkR, info, psk, pskID, skI):
      zz, enc = AuthEncap(pkR, skI)
      pkIm = Marshal(pk(skI))
      return enc, KeySchedule(pkR, zz, enc, info, psk, pskID, pkIm)
 
-   def SetupAuthR(enc, skR, psk, pskID, pkI, info):
+   def SetupAuthPSKR(enc, skR, info, psk, pskID, pkI):
      zz = AuthDecap(enc, skR, pkI)
      pkIm = Marshal(pkI)
      return KeySchedule(pk(skR), zz, enc, info, psk, pskID, pkIm)
@@ -669,7 +669,7 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                [Page 12]
+Barnes & Bhargavan       Expires March 17, 2020                [Page 12]
 
 Internet-Draft                    HPKE                    September 2019
 
@@ -708,14 +708,12 @@ Internet-Draft                    HPKE                    September 2019
      self.seq += 1
      return pt
 
-7.  Algorithm Identifiers
+7.  Single-Shot APIs
 
-7.1.  Key Encapsulation Mechanisms (KEMs)
-
-
-
-
-
+   In many cases, applications encrypt only a single message to a
+   recipient's public key.  This section provides templates for HPKE
+   APIs that implement "single-shot" encryption and decryption using
+   APIs specified in Section 6.2 and Section 6.6:
 
 
 
@@ -725,10 +723,39 @@ Internet-Draft                    HPKE                    September 2019
 
 
 
-Barnes & Bhargavan        Expires March 9, 2020                [Page 13]
+
+
+Barnes & Bhargavan       Expires March 17, 2020                [Page 13]
 
 Internet-Draft                    HPKE                    September 2019
 
+
+   def Seal<MODE>(pkR, info, aad, pt, ...):
+     enc, ctx = Setup<MODE>I(pkR, info, ...)
+     ct = ctx.Seal(aad, pt)
+     return enc, ct
+
+   def Open<MODE>(enc, skR, info, aad, ct, ...):
+     ctx = Setup<MODE>R(enc, skR, info, ...)
+     return ctx.Open(aad, ct)
+
+   The "MODE" template parameter is one of Base, PSK, Auth, or AuthPSK.
+   The optional parameters indicated by "..."" depend on "MODE" and may
+   be empty.  SetupBase, for example, has no additional parameters.
+   Thus, SealAuthPSK and OpenAuthPSK would be implemented as follows:
+
+   def SealAuthPSK(pkR, info, aad, pt, psk, pskID, skI):
+     enc, ctx = SetupAuthPSKI(pkR, info, psk, pskID, skI)
+     ct = ctx.Seal(aad, pt)
+     return enc, ct
+
+   def OpenAuthPSK(enc, skR, info, aad, ct):
+     ctx = SetupAuthPSKR(enc, skR, info, psk, pskID, skI)
+     return ctx.Open(aad, ct)
+
+8.  Algorithm Identifiers
+
+8.1.  Key Encapsulation Mechanisms (KEMs)
 
         +--------+-------------------+------+-----+--------------+
         | Value  | KEM               | Nenc | Npk | Reference    |
@@ -751,11 +778,19 @@ Internet-Draft                    HPKE                    September 2019
    public key "pkE" is on the curve.  The relevant validation procedures
    are defined in [keyagreement]
 
+
+
+
+Barnes & Bhargavan       Expires March 17, 2020                [Page 14]
+
+Internet-Draft                    HPKE                    September 2019
+
+
    For the CFRG curves Curve25519 and Curve448, the Marshal function is
    the identity function, since these curves already use fixed-length
    octet strings for public keys.
 
-7.2.  Key Derivation Functions (KDFs)
+8.2.  Key Derivation Functions (KDFs)
 
                 +--------+-------------+-----+-----------+
                 | Value  | KDF         | Nh  | Reference |
@@ -767,24 +802,7 @@ Internet-Draft                    HPKE                    September 2019
                 | 0x0002 | HKDF-SHA512 | 64  | [RFC5869] |
                 +--------+-------------+-----+-----------+
 
-7.3.  Authenticated Encryption with Associated Data (AEAD) Functions
-
-
-
-
-
-
-
-
-
-
-
-
-
-Barnes & Bhargavan        Expires March 9, 2020                [Page 14]
-
-Internet-Draft                    HPKE                    September 2019
-
+8.3.  Authenticated Encryption with Associated Data (AEAD) Functions
 
            +--------+------------------+-----+-----+-----------+
            | Value  | AEAD             | Nk  | Nn  | Reference |
@@ -798,11 +816,11 @@ Internet-Draft                    HPKE                    September 2019
            | 0x0003 | ChaCha20Poly1305 | 32  | 12  | [RFC8439] |
            +--------+------------------+-----+-----+-----------+
 
-8.  Security Considerations
+9.  Security Considerations
 
    [[ TODO ]]
 
-9.  Message Encoding
+10.  Message Encoding
 
    This document does not specify a wire format encoding for HPKE
    messages.  Applications that adopt HPKE must therefore specify an
@@ -810,13 +828,23 @@ Internet-Draft                    HPKE                    September 2019
    encapsulated value "enc", ciphertext value(s) (and order if there are
    multiple), and any info values that are not implicit.
 
-10.  IANA Considerations
+11.  IANA Considerations
 
    [[ TODO: Make IANA registries for the above ]]
 
-11.  References
 
-11.1.  Normative References
+
+
+
+
+Barnes & Bhargavan       Expires March 17, 2020                [Page 15]
+
+Internet-Draft                    HPKE                    September 2019
+
+
+12.  References
+
+12.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -831,18 +859,7 @@ Internet-Draft                    HPKE                    September 2019
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-
-
-
-
-
-
-Barnes & Bhargavan        Expires March 9, 2020                [Page 15]
-
-Internet-Draft                    HPKE                    September 2019
-
-
-11.2.  Informative References
+12.2.  Informative References
 
    [ANSI]     "Public Key Cryptography for the Financial Services
               Industry -- Key Agreement and Key Transport Using Elliptic
@@ -872,6 +889,15 @@ Internet-Draft                    HPKE                    September 2019
               Cryptography - Amendment 1 -- Additional Techniques",
               n.d..
 
+
+
+
+
+Barnes & Bhargavan       Expires March 17, 2020                [Page 16]
+
+Internet-Draft                    HPKE                    September 2019
+
+
    [ISO]      "ISO/IEC 18033-2, Information Technology - Security
               Techniques - Encryption Algorithms - Part 2 -- Asymmetric
               Ciphers", n.d..
@@ -886,17 +912,6 @@ Internet-Draft                    HPKE                    September 2019
    [MAEA10]   "A Comparison of the Standardized Versions of ECIES",
               n.d., <http://sceweb.sce.uhcl.edu/yang/teaching/
               csci5234WebSecurityFall2011/Chaum-blind-signatures.PDF>.
-
-
-
-
-
-
-
-Barnes & Bhargavan        Expires March 9, 2020                [Page 16]
-
-Internet-Draft                    HPKE                    September 2019
-
 
    [NISTCurves]
               "Digital Signature Standard (DSS)", National Institute of
@@ -928,6 +943,17 @@ Internet-Draft                    HPKE                    September 2019
               Cryptography Group, ver. 2", n.d.,
               <http://www.secg.org/download/aid-780/sec1-v2.pdf>.
 
+
+
+
+
+
+
+Barnes & Bhargavan       Expires March 17, 2020                [Page 17]
+
+Internet-Draft                    HPKE                    September 2019
+
+
 Appendix A.  Possible TODOs
 
    The following extensions might be worth specifying:
@@ -944,15 +970,6 @@ Appendix A.  Possible TODOs
       the deterministic mode and fail.
 
    o  A reference implementation in hacspec or similar
-
-
-
-
-
-Barnes & Bhargavan        Expires March 9, 2020                [Page 17]
-
-Internet-Draft                    HPKE                    September 2019
-
 
 Authors' Addresses
 
@@ -988,21 +1005,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Barnes & Bhargavan        Expires March 9, 2020                [Page 18]
+Barnes & Bhargavan       Expires March 17, 2020                [Page 18]
