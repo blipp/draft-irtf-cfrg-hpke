@@ -1,6 +1,60 @@
 [
 
   {
+    "url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/6",
+    "repository_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke",
+    "labels_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/6/labels{/name}",
+    "comments_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/6/comments",
+    "events_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/6/events",
+    "html_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/6",
+    "id": 493762945,
+    "node_id": "MDExOlB1bGxSZXF1ZXN0MzE3NjU1MjMy",
+    "number": 6,
+    "title": "Editorial fixes",
+    "user": {
+      "login": "chris-wood",
+      "id": 2172048,
+      "node_id": "MDQ6VXNlcjIxNzIwNDg=",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2172048?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/chris-wood",
+      "html_url": "https://github.com/chris-wood",
+      "followers_url": "https://api.github.com/users/chris-wood/followers",
+      "following_url": "https://api.github.com/users/chris-wood/following{/other_user}",
+      "gists_url": "https://api.github.com/users/chris-wood/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/chris-wood/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/chris-wood/subscriptions",
+      "organizations_url": "https://api.github.com/users/chris-wood/orgs",
+      "repos_url": "https://api.github.com/users/chris-wood/repos",
+      "events_url": "https://api.github.com/users/chris-wood/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/chris-wood/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "closed",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2019-09-15T17:15:43Z",
+    "updated_at": "2019-09-18T22:20:20Z",
+    "closed_at": "2019-09-18T22:20:19Z",
+    "author_association": "CONTRIBUTOR",
+    "pull_request": {
+      "url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/pulls/6",
+      "html_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/6",
+      "diff_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/6.diff",
+      "patch_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/pull/6.patch"
+    },
+    "body": "Also, apply a couple editorial fixes.\r\n\r\ncc @bifurcation "
+  },
+  {
     "url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/5",
     "repository_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke",
     "labels_url": "https://api.github.com/repos/cfrg/draft-irtf-cfrg-hpke/issues/5/labels{/name}",
@@ -97,7 +151,7 @@
     "milestone": null,
     "comments": 0,
     "created_at": "2019-09-02T23:23:49Z",
-    "updated_at": "2019-09-06T20:07:56Z",
+    "updated_at": "2019-09-15T17:04:12Z",
     "closed_at": "2019-09-06T20:07:56Z",
     "author_association": "CONTRIBUTOR",
     "pull_request": {
